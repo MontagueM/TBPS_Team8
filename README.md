@@ -1,4 +1,3 @@
-# TBPS Team 8
-Main repo.
+# TBPS Team 8 - Analysis
 
-Click the branch button that says "main" with a dropdown, then select the relevant branch for the project
+Primary repo for the analysis work

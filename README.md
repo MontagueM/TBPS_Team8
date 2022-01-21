@@ -1,3 +1,3 @@
-# TBPS Team 8 - Analysis
+# TBPS Team 8 - Cleaning
 
-Primary repo for the analysis work
+Primary repo for the cleaning work

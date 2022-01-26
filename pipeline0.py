@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
 import pandas as pd
+import matplotlib.pyplot as plt
+
+from criteria import *
+
 
 '''
 pipeline for using all criteria functions in a certain order
@@ -10,6 +14,11 @@ by convention, which is one level beneath the pipeline directory
 
 ie workfile = mainfolder/pipeline0.py
 data = mainfolder/data/data1.csv for example
+
+by convention, apply function that restrict the DOMAIN first before
+applying filters that look at data from a given domain
+
+
 '''
 
 '''
@@ -42,9 +51,17 @@ for simple reference here are the 81 data columns present in the dataframes
       dtype='object'
 '''
 
+df = pd.read_pickle('data/total_dataset.pkl')
+df_signal = pd.read_pickle('data/signal.pkl')
 
 
+df_after = Kstar_consistent(df, df_signal, 2)
+df_hi = hypotheses_compound(df_after, 0.5, 0.3)
 
-print('hi')
-df = pd.read_pickle('data/jpsi.pkl')
-print(df.columns)
+plt.hist(df_after['Kstar_MM'], histtype = 'step', label = 'peak_selection')
+plt.hist(df_hi['Kstar_MM'], histtype = 'step', label = 'peak_selection + prob filtering')
+plt.xlabel('Invariant Mass of products (MeV/C^2)')
+plt.ylabel('Counts')
+
+plt.legend()
+plt.show()

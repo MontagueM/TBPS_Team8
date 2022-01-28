@@ -8,6 +8,11 @@ Click the branch button that says "main" with a dropdown, then select the releva
 Uploading code to the repos requires a bit of work, it's a bit too easy to accidentally delete other peoples work, add huge files, etc
 The below sections should help guide you if you want to upload your own code to here
 
+### Anti-social behaviour to be avoided
+
+* Pushing into the repo your RAW data files = megabytes of files. Use the .gitignore file to exlude your data when committing/pushing!
+* Committing/pushing/editing code on your local editor without fetching/pulling first. Pulling first is important for multiple people sharing a branch!
+
 ### If you're not sure but want to try
 
 * Select the branch you want to start off with as the "base" for your new branch
@@ -24,3 +29,6 @@ send your code to the whatsapp chats and we can upload it for you
 
 ### If you're queen
 just commit easy
+
+### If you're going insane 
+seek therapy

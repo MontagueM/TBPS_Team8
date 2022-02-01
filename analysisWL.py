@@ -27,9 +27,9 @@ def binq2_filter(data):
 # Load in standard model predictions - copied from skeleton
 si_preds = {}
 pi_preds = {}
-with open("data/std_predictions_si.json","r") as _f:
+with open("predictions/std_predictions_si.json","r") as _f:
     si_preds = json.load(_f)
-with open("data/std_predictions_pi.json","r") as _f:
+with open("predictions/std_predictions_pi.json","r") as _f:
     pi_preds = json.load(_f)
 
 si_frames = []# Will start with si_frames for analysis 
@@ -234,7 +234,7 @@ def min_plot_all_bins(bins,folder,fname,show=False,save=False,profile =False):
     plt.show()
 
 
-for i in [4]:
+for i in range(len(names)):
     print('/nFor'+names[i][0]+names[i][1])
     file = pd.read_pickle(names[i][0]+names[i][1]+'.pkl')
     bins = binq2_filter(file)

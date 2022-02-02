@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import pandas as df
+import pandas as pd
 import scipy.optimize as opt
 import numpy as np
 
@@ -66,7 +66,6 @@ def Kstar_consistent(Dataframe_real, Dataframe_Signal, threshold):
 
 
     return df_after
-
 
 
 ipchi2_sets = (('mu_plus', 'mu_minus'), ('K', 'Pi'))

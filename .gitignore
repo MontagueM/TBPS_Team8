@@ -1,7 +1,12 @@
 data/
 data
+
 !**/__pycache__/
+
+__pycache__/
+__pycache__
 
 output/
 output
-critera/__pycache__/
+
+criteria/__pycache__/

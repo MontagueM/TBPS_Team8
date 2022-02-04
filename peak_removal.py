@@ -5,7 +5,39 @@ import scipy.optimize as opt
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as opt
+from scipy.odr import *
+
+
 from math_machinery import *
+
+def odrfit(self, function, x, y, initials, xerr = 1., yerr = 1.):
+
+    chisquare = -1
+
+    # Create a scipy Model object
+    model = Model(function)
+    # Create a RealData object using our initiated data from above. basically declaring all our variables using the RealData command which the scipy package wants
+    input = RealData(x, y, sx = xerr, sy = yerr)
+    # Set up ODR with the model and data. ODR is orthogonal distance regression (need to google!)
+    odr = ODR(input, model, beta0 = initials)
+
+    print('\nRunning fit!')
+    # Run the regression.
+    output = odr.run()
+    print('\nFit done!')
+    # output.beta contains the fitted parameters (it's a list, so you can sub it back into function as p!)
+    print('\nFitted parameters = ', output.beta)
+    print('\nError of parameters =', output.sd_beta)
+
+    #now we can calculate chi-square (if you included errors for fitting, if not it's meaningless)
+
+
+    chisquare = np.sum((y - function(output.beta, x))**2/yerr**2)
+    chi_reduced = chisquare / (len(x) - len(initials))
+    print('\nReduced Chisquare = ', chi_reduced, 'with ',  len(x) - len(initials), 'Degrees of Freedom')
+
+
+    return output.beta, output.sd_beta, chi_reduced
 
 
 
@@ -21,7 +53,7 @@ def make_hist(dataframe,bins,column='q2',ranges = (0,20)):
 def fit_curve(dataframe,equation,rangelist=[(0,20)]):
     popt_list = []
     pcov_list= []
-    
+
     for ranges in rangelist:
         counts,midpoints = make_hist(dataframe,bins = 1000,ranges = ranges)
         popt,pcov = opt.curve_fit(equation,midpoints,counts,p0=(11,1,150000))

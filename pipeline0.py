@@ -3,15 +3,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-#!/usr/bin/env python3
-
-import pandas as pd
-import matplotlib.pyplot as plt
-
 from B0_ENDVERTEX_CHI2 import *
 from B0_IPCHI2_OWNPV import *
 from hypotheses_compound import *
-from IPCHI2_daughter_particle_selection import *
+from IPCHI2_Selection import *
 from Kstar_consistent import *
 from Kstar_ENDVERTEX_CHI2 import *
 
@@ -55,7 +50,7 @@ for simple reference here are the 81 data columns present in the dataframes
        'B0_ENDVERTEX_CHI2', 'B0_ENDVERTEX_NDOF', 'B0_FDCHI2_OWNPV', 'Kstar_MM',
        'Kstar_ENDVERTEX_CHI2', 'Kstar_ENDVERTEX_NDOF', 'Kstar_FDCHI2_OWNPV',
        'J_psi_MM', 'J_psi_ENDVERTEX_CHI2', 'J_psi_ENDVERTEX_NDOF',
-       'J_psi_FDCHI2_OWNPV', 'B0_IPCHI2_OWNPV', 'B0_DIRA_OWNPV', 'B0_OWNPV_X',
+        'J_psi_FDCHI2_OWNPV', 'B0_IPCHI2_OWNPV', 'B0_DIRA_OWNPV', 'B0_OWNPV_X',
        'B0_OWNPV_Y', 'B0_OWNPV_Z', 'B0_FD_OWNPV', 'B0_ID', 'q2', 'phi',
        'costhetal', 'costhetak', 'polarity', 'year'],
       dtype='object'
@@ -64,15 +59,29 @@ for simple reference here are the 81 data columns present in the dataframes
 df = pd.read_pickle('data/total_dataset.pkl')
 df_signal = pd.read_pickle('data/signal.pkl')
 
+threshold0 = (0.5,0.3)
+threshold1 = 0.95
 
-df_after = Kstar_consistent(df, df_signal, 2)
-df_hi = hypotheses_compound(df_after, 0.5, 0.3)
+df_after0 = Kstar_consistent(df, df_signal, threshold1)
+df_after1 = hypotheses_compound(df_after0, threshold0[0], threshold0[1])
+df_after2 = B0_ENDVERTEX_CHI2(df_after1, df_signal, threshold1)
+df_after3 = B0_IPCHI2_OWNPV(df_after2, df_signal, threshold1)
+df_after4 = IPCHI2_Selection(df_after3, df_signal, threshold1)
+df_after5 = Kstar_ENDVERTEX_CHI2(df_after4, df_signal, threshold1)
 
-plt.hist(df_after['Kstar_MM'], histtype = 'step', label = 'peak_selection')
-plt.hist(df_hi['Kstar_MM'], histtype = 'step', label = 'peak_selection + prob filtering')
+
+
+plt.hist(df_after0['Kstar_MM'], histtype = 'step', label = 'peak_selection')
+plt.hist(df_after1['Kstar_MM'], histtype = 'step', label = 'peak_selection + prob filtering')
 plt.xlabel('Invariant Mass of products (MeV/C^2)')
 plt.ylabel('Counts')
 
 plt.legend()
 plt.show()
+
+
+
+
+
+
 

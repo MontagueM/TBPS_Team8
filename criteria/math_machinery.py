@@ -3,12 +3,10 @@
 import numpy as np
 
 
-def lorenzian(p, x):
+def lorenzian(x, x0, gamma, A):
+    return A/np.pi* (0.5*gamma)/((x-x0)**2+(0.5*gamma)**2)
 
-    x0, gamma, A = p
-    return A/np.pi* ((0.5*gamma)/((x-x0)**2+(0.5*gamma)**2))
-
-
+    
 def gaussian(p):
 
     x0, sigma, A = p

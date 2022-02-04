@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def Pion_PT_Selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This IP should be large, threshold shouble be given in [0-1] to say how many particle we want to keep
+def pion_pt_selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This IP should be large, threshold shouble be given in [0-1] to say how many particle we want to keep
 
     Pi_PT_Signal = Dataframe_signal['Pi_PT'].to_numpy()
     height, bins = np.histogram(Pi_PT_Signal, bins = 500, range = (0,6000))
@@ -15,7 +15,7 @@ def Pion_PT_Selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This 
         SUM+= height[i]
         #print(SUM)
         if SUM/N_tot > 1-threshold:
-        limit = bins[i+1]
+            limit = bins[i+1]
         #print(limit)
         break
 
@@ -24,7 +24,7 @@ def Pion_PT_Selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This 
 
     return df_after
 
-def Kaon_PT_Selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This IP should be large, threshold shouble be given in [0-1] to say how many particle we want to keep
+def kaon_pt_selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This IP should be large, threshold shouble be given in [0-1] to say how many particle we want to keep
 
     K_PT_Signal = Dataframe_signal['K_PT'].to_numpy()
     height, bins = np.histogram(K_PT_Signal, bins = 500, range = (0,8000))
@@ -37,7 +37,7 @@ def Kaon_PT_Selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This 
         SUM+= height[i]
         #print(SUM)
         if SUM/N_tot > 1-threshold:
-        limit = bins[i+1]
+            limit = bins[i+1]
         print(limit)
         break
 

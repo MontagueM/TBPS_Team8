@@ -8,7 +8,7 @@ This selection criteria tests the impact paramter chi squared for all daughter p
 
 ipchi2_sets = (('mu_plus', 'mu_minus'), ('K', 'Pi'))
 
-def IPCHI2_daughter_particle_selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This IP should be large, threshold shouble be given in [0-1] to say how many particle we want to keep
+def ipchi2_selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This IP should be large, threshold shouble be given in [0-1] to say how many particle we want to keep
 
     for i in range(2):
 

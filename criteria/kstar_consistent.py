@@ -1,13 +1,13 @@
 import pandas as df
 import scipy.optimize as opt
 import numpy as np
-from math_machinery import *
+from criteria.math_machinery import *
 
 """
 This selection criteria tests the consistency of the Kstar mass
 """
 
-def Kstar_consistent(Dataframe_real, Dataframe_Signal, threshold):
+def kstar_consistent(Dataframe_real, Dataframe_Signal, threshold):
 
     #Both input should have type of pandas.Dataframe
 

@@ -3,12 +3,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from B0_ENDVERTEX_CHI2 import *
-from B0_IPCHI2_OWNPV import *
-from hypotheses_compound import *
-from IPCHI2_Selection import *
-from Kstar_consistent import *
-from Kstar_ENDVERTEX_CHI2 import *
+from criteria import *
 
 
 '''
@@ -56,32 +51,57 @@ for simple reference here are the 81 data columns present in the dataframes
       dtype='object'
 '''
 
-df = pd.read_pickle('data/total_dataset.pkl')
+df_real = pd.read_pickle('data/total_dataset.pkl')
 df_signal = pd.read_pickle('data/signal.pkl')
 
-threshold0 = (0.5,0.3)
-threshold1 = 0.95
+df_jpsi = pd.read_pickle('data/jpsi.pkl')
+df_psi2s = pd.read_pickle('data/psi2S.pkl')
 
-df_after0 = Kstar_consistent(df, df_signal, threshold1)
-df_after1 = hypotheses_compound(df_after0, threshold0[0], threshold0[1])
-df_after2 = B0_ENDVERTEX_CHI2(df_after1, df_signal, threshold1)
-df_after3 = B0_IPCHI2_OWNPV(df_after2, df_signal, threshold1)
-df_after4 = IPCHI2_Selection(df_after3, df_signal, threshold1)
-df_after5 = Kstar_ENDVERTEX_CHI2(df_after4, df_signal, threshold1)
+threshold0 = 0.998
+threshold1 = 0.998
 
+df_after0 = peaking_selection_psi2s(df_real, df_psi2s, threshold0)
+# df_after0.to_pickle('output')
 
 
-plt.hist(df_after0['Kstar_MM'], histtype = 'step', label = 'peak_selection')
-plt.hist(df_after1['Kstar_MM'], histtype = 'step', label = 'peak_selection + prob filtering')
+plt.hist(df_after0['q2'], bins = 500, histtype = 'step', label = 'peak filtered')
+# plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
 plt.xlabel('Invariant Mass of products (MeV/C^2)')
 plt.ylabel('Counts')
 
 plt.legend()
 plt.show()
 
+#
+#
+df_after1 = peaking_selection_jpsi(df_after0, df_jpsi, threshold1)
+
+print(len(df_after1))
+plt.hist(df_after1['q2'], bins = 500, histtype = 'step', label = 'peaks filtered')
+# plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
+plt.xlabel('Invariant Mass of products (MeV/C^2)')
+plt.ylabel('Counts')
+
+plt.legend()
+plt.show()
+
+functions = [b0_endvertex_chi2, b0_ipchi2, ipchi2_selection, kstar_consistent, kstar_endvertex_chi2, pion_pt_selection, kaon_pt_selection, hypotheses_compound]
+
+thresholds = [0.6]*7 + [[0.5, 0.3]]
 
 
+df_old = df_after1
+for index, function in enumerate(functions):
 
+    print(function)
+    df_new = function(df_old, df_signal, thresholds[index])
 
+    plt.hist(df_old['q2'], bins = 500, histtype = 'step', label = 'old')
+    plt.hist(df_new['q2'],  bins = 500, histtype = 'step', label = 'new')
+    plt.xlabel('Invariant Mass of products (MeV/C^2)')
+    plt.ylabel('Counts')
 
-
+    plt.legend()
+    plt.show()
+    df_old = df_new
+    print('HIIIIIII', len(df_old))

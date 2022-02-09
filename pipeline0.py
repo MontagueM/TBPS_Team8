@@ -91,10 +91,10 @@ plt.show()
 
 df_after1.to_pickle('output/peak_filtered.pkl')
 
-functions = [b0_endvertex_chi2, b0_ipchi2, ipchi2_selection, kstar_consistent, kstar_endvertex_chi2, pion_pt_selection, kaon_pt_selection, hypotheses_compound]
+functions = [ b0_endvertex_chi2, ipchi2_selection,  b0_ipchi2, kstar_consistent, kstar_endvertex_chi2, pion_pt_selection, kaon_pt_selection]# hypotheses_compound,
 
 
-thresholds = [0.9]*7 + [[0.5, 0.3]]
+thresholds =   [0.9]*7#[[0.5, 0.3]]
 
 
 df_old = df_after1
@@ -113,7 +113,8 @@ for index, function in enumerate(functions):
     df_old = df_new
     print('HIIIIIII', len(df_old))
 
-plt.hist(df_new['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
-plt.hist(df_real['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
-
+plt.hist(df_new['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'cut data')
+plt.hist(df_real['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'data')
+plt.hist(df_signal['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'signal')
+plt.legend()
 plt.show()

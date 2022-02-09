@@ -18,6 +18,7 @@ background and NOT B0
 
 
 df_real = pd.read_pickle('data/total_dataset.pkl')
+df_signal = pd.read_pickle('data/signal.pkl')
 
 def b0mm_cut(dataframe, threshold):
 
@@ -31,8 +32,12 @@ df_cut, trash = b0mm_cut(df_real, 5380)
 print('\n\nPLEASE MAKE A FOLDER CALLED OUTPUT FIRSTTTTT\n\n')
 trash.to_pickle('output/b0_mm_trash0.pkl')
 
+print(len(trash),'Length of Trash')
+print('approximately ',len(df_signal[df_signal['B0_MM'] > 5380])/len(df_signal),'% of signal removed')
 
 plt.hist(df_cut['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
 plt.hist(df_real['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
+plt.hist(df_signal['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'signal')
+
 
 plt.show()

@@ -25,7 +25,7 @@ def hypotheses_compound(dataframe, dataframe_dummy, thresholds):
 
     base_threshold, other_threshold = thresholds
 
-    print(dataframe.shape)
+    print(dataframe.shape) 
     for species_probs in species:
 
         ### standard pandas dataframe row selection with comparator

@@ -27,7 +27,7 @@ applying filters that look at data from a given domain
 
 
 df_real = pd.read_pickle('data/total_dataset.pkl')
-df_signal = pd.read_pickle('data/signal.pkl')
+df_signal = pd.read_pickle('data/acceptance_mc.pkl')
 
 df_jpsi = pd.read_pickle('data/jpsi.pkl')
 df_psi2s = pd.read_pickle('data/psi2S.pkl')
@@ -37,34 +37,34 @@ threshold0 = 0.998
 threshold1 = 0.998
 
 df_after0 = peaking_selection_psi2s(df_real, df_psi2s, threshold0)
-# df_after0.to_pickle('output')
-
-
-plt.hist(df_after0['q2'], bins = 500, histtype = 'step', label = 'peak filtered')
-# plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
-plt.xlabel('Invariant Mass of products (MeV/C^2)')
-plt.ylabel('Counts')
-
-plt.legend()
-plt.show()
-
+# # df_after0.to_pickle('output')
 #
 #
+# plt.hist(df_after0['q2'], bins = 500, histtype = 'step', label = 'peak filtered')
+# # plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
+# plt.xlabel('Invariant Mass of products (MeV/C^2)')
+# plt.ylabel('Counts')
+#
+# plt.legend()
+# plt.show()
+#
+# #
+# #
 df_after1 = peaking_selection_jpsi(df_after0, df_jpsi, threshold1)
-
-print(len(df_after1))
-plt.hist(df_after1['q2'], bins = 500, histtype = 'step', label = 'peaks filtered')
-# plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
-plt.xlabel('Invariant Mass of products (MeV/C^2)')
-plt.ylabel('Counts')
-
-plt.legend()
-plt.show()
+#
+# print(len(df_after1))
+# plt.hist(df_after1['q2'], bins = 500, histtype = 'step', label = 'peaks filtered')
+# # plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
+# plt.xlabel('Invariant Mass of products (MeV/C^2)')
+# plt.ylabel('Counts')
+#
+# plt.legend()
+# plt.show()
 
 functions = [b0_endvertex_chi2, b0_ipchi2, ipchi2_selection, kstar_consistent, kstar_endvertex_chi2, pion_pt_selection, kaon_pt_selection, hypotheses_compound]
 
 
-thresholds = [0.9]*7 + [[0.5, 0.3]]
+thresholds = [0.98]*7 + [[0.5, 0.3]]
 
 
 df_old = df_after1
@@ -83,7 +83,9 @@ for index, function in enumerate(functions):
     df_old = df_new
     print('HIIIIIII', len(df_old))
 
-plt.hist(df_new['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
-plt.hist(df_real['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
-
+print(len(df_new), 'length of filtered')
+print(len(df_signal), 'length of signal')
+plt.hist(df_new['costhetak'], bins = 50, density = True, histtype = 'step', label = 'filtered')#500
+plt.hist(df_signal['costhetak'], bins = 50, density = True, histtype = 'step', label = 'signal')
+plt.legend()
 plt.show()

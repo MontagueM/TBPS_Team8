@@ -13,14 +13,17 @@ def fit_costhetal(x, *coeffs):
     return summation
 
 
-def fit_costhetal_q2(x, *coeffs):
+def fit_costhetal_q2(xy, *coeffs):
     # Fit the function
     summation = 0
+    x = xy[0]
+    y = xy[1]
+    print(coeffs)
     for i in range(0, 5):
         pcl = np.polynomial.Legendre.basis(i).convert(kind=np.polynomial.Polynomial)
         for j in range(0, 6):
                 pq2 = np.polynomial.Legendre.basis(j).convert(kind=np.polynomial.Polynomial)
-                summation += pcl(x) * pq2(x) * coeffs[i][j]
+                summation += pcl(x) * pq2(y) * coeffs[i*5 + j]
     return summation
 
 
@@ -66,27 +69,13 @@ def accept_costhetal_q2(accept_data_range):
     # H, edges = np.histogramdd([accept_data_range["costhetal"], accept_data_range["q2"]], bins=(25, 25))
     fig = plt.figure()
     ax = fig.add_subplot()
-    hist, xedges, yedges = np.histogram2d(accept_data_range["costhetal"], accept_data_range["q2"], bins=5)
-
-    # Construct arrays for the anchor positions of the 16 bars.
-    xpos, ypos = np.meshgrid(xedges[:-1], yedges[:-1], indexing="ij")
-    xpos = xpos.ravel()
-    ypos = ypos.ravel()
-    zpos = hist.ravel()
-
-    # Construct arrays with the dimensions for the 16 bars.
-    dx = dy = 0.5 * np.ones_like(zpos)
-    dz = hist.ravel()
-
-    ax.tricontourf(xpos, ypos, zpos)
-    plt.show()
-
+    hist, xedges, yedges = np.histogram2d(accept_data_range["costhetal"], accept_data_range["q2"], bins=7)
     # Acceptance function
     # coeffs = [1] * 5
-    coeffs = [[1] * 6] * 5
-    o = scipy.optimize.curve_fit(fit_costhetal, bins, n, coeffs)
+    coeffs = np.ones((5, 6))
+    o = scipy.optimize.curve_fit(fit_costhetal_q2, (xedges, yedges), hist.ravel(), coeffs)
     # plt.scatter(n, bins)
-    # eff = fit_costhetal(bins, *o[0])
+    eff = fit_costhetal_q2((xedges, yedges), *o[0])
     # ax[0].scatter(bins, eff)
     # ax[1]
     plt.show()

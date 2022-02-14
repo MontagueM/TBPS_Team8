@@ -1,7 +1,12 @@
 # https://arxiv.org/pdf/1512.04442.pdf
+
+def acceptance_in_costhetal():
+    pass
 import numpy as np
 import scipy.optimize
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.use("TkAgg")
 
 
 def fit_costhetal(x, *coeffs):
@@ -18,7 +23,7 @@ def fit_costhetal_q2(xy, *coeffs):
     summation = 0
     x = xy[0]
     y = xy[1]
-    print(coeffs)
+    # print(coeffs)
     for i in range(0, 5):
         pcl = np.polynomial.Legendre.basis(i).convert(kind=np.polynomial.Polynomial)
         for j in range(0, 6):
@@ -70,13 +75,33 @@ def accept_costhetal_q2(accept_data_range):
     fig = plt.figure()
     ax = fig.add_subplot()
     hist, xedges, yedges = np.histogram2d(accept_data_range["costhetal"], accept_data_range["q2"], bins=7)
+    diff = xedges[1] - xedges[0]
+    X = [x+diff/2 for x in xedges][:-1]
+    Y = [y+diff/2 for y in yedges][:-1]
+    X, Y = np.meshgrid(X, Y)
     # Acceptance function
     # coeffs = [1] * 5
+
+    xdata = np.vstack((X.ravel(), Y.ravel()))
+    ydata = hist.ravel()
+
     coeffs = np.ones((5, 6))
-    o = scipy.optimize.curve_fit(fit_costhetal_q2, (xedges, yedges), hist.ravel(), coeffs)
+    popt, pcov = scipy.optimize.curve_fit(fit_costhetal_q2, xdata, ydata, coeffs)
     # plt.scatter(n, bins)
-    eff = fit_costhetal_q2((xedges, yedges), *o[0])
+    # eff = fit_costhetal_q2((xedges, yedges), *o[0])
     # ax[0].scatter(bins, eff)
+    fit = np.zeros(hist.shape)
+    # for i in range(len(X)):
+    fit = fit_costhetal_q2(xdata, *popt)
+    print(fit)
+    fit = np.reshape(fit, hist.shape)
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.plot_surface(X, Y, fit, cmap="plasma")
+    cset = ax.contour(X, Y, fit, zdir='z', offset=0, cmap="plasma")
+    ax.set_zlim(0, np.max(fit))
+
     # ax[1]
     plt.show()
     a = 0

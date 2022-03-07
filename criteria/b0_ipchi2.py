@@ -23,4 +23,6 @@ def b0_ipchi2(Dataframe_real, Dataframe_Signal, threshold):
 
     # Remove data below a certain threshold
     df_after = Dataframe_real[Dataframe_real['B0_IPCHI2_OWNPV'] < limit]
+    print('b0 ipchi2 limit:', limit)
+
     return df_after

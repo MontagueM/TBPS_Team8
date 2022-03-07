@@ -21,7 +21,7 @@ species = (mu_plus_probs, mu_minus_probs, k_probs, pi_probs)
 format: dataframe in, truncated dataframe out
 
 '''
-def hypotheses_compound(dataframe, dataframe_dummy, thresholds):
+def hypotheses_compound(dataframe, dummy_frame, thresholds):
 
     base_threshold, other_threshold = thresholds
 

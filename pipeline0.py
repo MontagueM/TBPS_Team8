@@ -51,6 +51,7 @@ for simple reference here are the 81 data columns present in the dataframes
       dtype='object'
 '''
 
+
 df_real = pd.read_pickle('data/total_dataset.pkl')
 df_signal = pd.read_pickle('data/signal.pkl')
 
@@ -64,20 +65,9 @@ plt.show()
 threshold0 = 0.998
 threshold1 = 0.998
 
+print(len(df_real))
 df_after0 = peaking_selection_psi2s(df_real, df_psi2s, threshold0)
-# df_after0.to_pickle('output')
-
-
-plt.hist(df_after0['q2'], bins = 500, histtype = 'step', label = 'peak filtered')
-# plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
-plt.xlabel('Invariant Mass of products (MeV/C^2)')
-plt.ylabel('Counts')
-
-plt.legend()
-plt.show()
-
-#
-#
+print(len(df_after0))
 df_after1 = peaking_selection_jpsi(df_after0, df_jpsi, threshold1)
 
 print(len(df_after1))
@@ -91,27 +81,21 @@ plt.show()
 
 df_after1.to_pickle('output/peak_filtered.pkl')
 
-functions = [ b0_endvertex_chi2, ipchi2_selection,  b0_ipchi2, kstar_consistent, kstar_endvertex_chi2, pion_pt_selection, kaon_pt_selection]# hypotheses_compound,
+functions = [ b0_endvertex_chi2, ipchi2_selection,  b0_ipchi2, kstar_endvertex_chi2, pion_pt_selection, kaon_pt_selection, kstar_fdchi2, b0_fdchi2, kstar_consistent, hypotheses_compound]
 
 
-thresholds =   [0.9]*7#[[0.5, 0.3]]
+thresholds =   [0.9]*6 + [0.99] + [0.995] + [2.0] + [[0.5, 0.3]]
 
-
-df_old = df_after1
+df_old = pd.read_pickle('output/peak_filtered.pkl')
 for index, function in enumerate(functions):
+    print('Current data length = ', len(df_old))
+    print('Function and threshold = ', function, thresholds[index])
 
-    print(function)
     df_new = function(df_old, df_signal, thresholds[index])
-    #
-    # plt.hist(df_old['q2'], bins = 500, histtype = 'step', label = 'old')
-    # plt.hist(df_new['q2'],  bins = 500, histtype = 'step', label = 'new')
-    # plt.xlabel('Invariant Mass of products (MeV/C^2)')
-    # plt.ylabel('Counts')
-    #
-    # plt.legend()
-    # plt.show()
     df_old = df_new
-    print('HIIIIIII', len(df_old))
+
+df_new.to_pickle('output/final_filtered.pkl')
+
 
 plt.hist(df_new['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'cut data')
 plt.hist(df_real['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'data')

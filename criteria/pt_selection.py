@@ -17,7 +17,7 @@ def pion_pt_selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This 
         if SUM/N_tot > 1-threshold:
             limit = bins[i+1]
         #print(limit)
-        break
+            break
 
     #print(limit)
     df_after = Dataframe_real[Dataframe_real['Pi_PT']>limit]
@@ -38,8 +38,8 @@ def kaon_pt_selection(Dataframe_real, Dataframe_signal, threshold = 0.9): #This 
         #print(SUM)
         if SUM/N_tot > 1-threshold:
             limit = bins[i+1]
-        print(limit)
-        break
+            print(limit)
+            break
 
     #print(limit)
     df_after = Dataframe_real[Dataframe_real['K_PT']>limit]

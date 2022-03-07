@@ -17,8 +17,9 @@ def b0_endvertex_chi2(Dataframe_real, Dataframe_Signal, threshold):
         if SUM/N_tot > 1-threshold:
             limit = bins[i-1]
             break
-    print(limit)
     # Remove data below a certain threshold
 
-    df_after = Dataframe_real[Dataframe_real['B0_ENDVERTEX_CHI2'] < limit]
+    df_after = Dataframe_real[Dataframe_real['B0_ENDVERTEX_CHI2'] < limit]  
+    print('b0 endvertex chi2 limit:', limit)
+
     return df_after

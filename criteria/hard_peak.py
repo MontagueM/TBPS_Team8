@@ -30,7 +30,7 @@ def peaking_selection_psi2s(Dataframe_real, Dataframe_psi2S, threshold = 0.994):
             limit2 = bins[i-1]
             break
 
-    #print(limit1, limit2)
+    print('Upper cut, lower cut, threshold is:', limit1, limit2, threshold)
     df_after = Dataframe_real[Dataframe_real['q2']>limit2]
     #print(len(df_after))
     df_after2 = Dataframe_real[Dataframe_real['q2']<limit1]
@@ -66,7 +66,7 @@ def peaking_selection_jpsi(Dataframe_real, Dataframe_jpsi, threshold = 0.996):
             limit2 = bins[i-1]
             break
 
-    #print(limit1, limit2)
+    print('Upper cut, lower cut, threshold is:', limit1, limit2, threshold)
     df_after = Dataframe_real[Dataframe_real['q2']>limit2]
     #print(len(df_after))
     df_after2 = Dataframe_real[Dataframe_real['q2']<limit1]

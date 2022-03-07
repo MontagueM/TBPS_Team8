@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Read in the total data and signal dataframes
-df = pd.read_pickle('data/total_dataset.pkl')
-df_signal = pd.read_pickle('data/signal.pkl')
+# df = pd.read_pickle('data/total_dataset.pkl')
+# df_signal = pd.read_pickle('data/signal.pkl')
 
 def kstar_endvertex_chi2(Dataframe_real, Dataframe_Signal, threshold):
     Kstar_ENDVERTEX_CHI2_signal = Dataframe_Signal['Kstar_ENDVERTEX_CHI2'].to_numpy()
@@ -22,5 +22,6 @@ def kstar_endvertex_chi2(Dataframe_real, Dataframe_Signal, threshold):
     # print(limit)
     # Remove data below a certain threshold
 
+    print('kstar_endvertex chi2 limit:', limit)
     df_after = Dataframe_real[Dataframe_real['Kstar_ENDVERTEX_CHI2'] < limit]
     return df_after

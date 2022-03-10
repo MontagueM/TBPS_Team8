@@ -1,6 +1,6 @@
-# TBPS Team 8
-Main repo.
+# TBPS Team 8 - Cleaning
 
+<<<<<<< HEAD
 Click the branch button that says "main" with a dropdown, then select the relevant branch for the project
 
 ## How to add your code
@@ -32,3 +32,6 @@ just commit easy
 
 ### If you're going insane 
 seek therapy
+=======
+Primary repo for the cleaning work
+>>>>>>> 8b49df8b243dde63155a9064658a9fcd70593732

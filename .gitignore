@@ -1,0 +1,12 @@
+data/
+data
+
+!**/__pycache__/
+
+__pycache__/
+__pycache__
+
+output/
+output
+
+criteria/__pycache__/

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pandas as df
 import scipy.optimize as opt
 import numpy as np
@@ -15,8 +17,10 @@ pi_probs =('Pi_MC15TuneV1_ProbNNpi','Pi_MC15TuneV1_ProbNNk',
 'Pi_MC15TuneV1_ProbNNmu', 'Pi_MC15TuneV1_ProbNNe',
 'Pi_MC15TuneV1_ProbNNp')
 
-species = (mu_plus_probs, mu_minus_probs, k_probs, pi_probs)
-
+first_stage = (mu_plus_probs, mu_minus_probs)
+second_stage = (k_probs, pi_probs)
+# first_stage = (mu_plus_probs, mu_minus_probs, k_probs, pi_probs)
+# second_stage = ()
 '''
 format: dataframe in, truncated dataframe out
 
@@ -25,16 +29,22 @@ def hypotheses_compound(dataframe, dummy_frame, thresholds):
 
     base_threshold, other_threshold = thresholds
 
-    print(dataframe.shape) 
-    for species_probs in species:
+    for species_probs in first_stage:
 
         ### standard pandas dataframe row selection with comparator
         ### this selects rows where BASE threshold is satisfied
         tempframe = dataframe[dataframe[species_probs[0]] > base_threshold]
 
         ### filters the frame further with remaining OTHER thresholds
-        for i in range(1, 5):
-            tempframe = tempframe[dataframe[species_probs[i]] < other_threshold]
+        for prob in species_probs[1:]:
+            tempframe = tempframe[dataframe[prob] < other_threshold]
 
-    print(tempframe.shape)
+    for species_probs in second_stage:
+
+        tempframe = dataframe[(dataframe[species_probs[0]] > base_threshold) | (dataframe[species_probs[1]] > base_threshold)]
+
+        ### filters the frame further with remaining OTHER thresholds
+        for prob in species_probs[2:]:
+            tempframe = tempframe[dataframe[prob] < other_threshold]
+
     return tempframe

@@ -58,10 +58,6 @@ df_signal = pd.read_pickle('data/signal.pkl')
 df_jpsi = pd.read_pickle('data/jpsi.pkl')
 df_psi2s = pd.read_pickle('data/psi2S.pkl')
 
-plt.hist(df_signal['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
-plt.hist(df_real['B0_MM'], bins = 500, density = True, histtype = 'step', label = 'peak filtered')
-
-plt.show()
 threshold0 = 0.998
 threshold1 = 0.998
 
@@ -75,24 +71,34 @@ plt.hist(df_after1['q2'], bins = 500, histtype = 'step', label = 'peaks filtered
 # plt.hist(df_real['q2'],  bins = 500, histtype = 'step', label = 'raw')
 plt.xlabel('Invariant Mass of products (MeV/C^2)')
 plt.ylabel('Counts')
-
 plt.legend()
 plt.show()
 
 df_after1.to_pickle('output/peak_filtered.pkl')
 
+#%%
+
+
 functions = [ b0_endvertex_chi2, ipchi2_selection,  b0_ipchi2, kstar_endvertex_chi2, pion_pt_selection, kaon_pt_selection, kstar_fdchi2, b0_fdchi2, kstar_consistent, hypotheses_compound]
+
 
 
 thresholds =   [0.9]*6 + [0.99] + [0.995] + [2.0] + [[0.5, 0.3]]
 
+
 df_old = pd.read_pickle('output/peak_filtered.pkl')
+
+# first we cut out the bad b0_mm range, threshold set at 5380
+df_old = b0_mm_consistent(df_old, 5380)
+
+#now we cycle through the individual criteria functions
 for index, function in enumerate(functions):
     print('Current data length = ', len(df_old))
     print('Function and threshold = ', function, thresholds[index])
 
     df_new = function(df_old, df_signal, thresholds[index])
     df_old = df_new
+print('Final data length = ', len(df_old))
 
 df_new.to_pickle('output/final_filtered.pkl')
 

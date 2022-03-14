@@ -2,6 +2,8 @@ import pandas as df
 import scipy.optimize as opt
 import numpy as np
 
+#!/usr/bin/env python3
+
 """
 This selection criteria tests the impact paramter chi squared for all daughter particles, which we want to be large
 """

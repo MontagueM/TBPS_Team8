@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pandas as df
 import scipy.optimize as opt
 import numpy as np
